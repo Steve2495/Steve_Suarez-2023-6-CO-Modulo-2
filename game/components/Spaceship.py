@@ -1,0 +1,45 @@
+import pygame
+from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, SPACESHIP_VELOCITY
+
+class Spaceship:
+    scale_x, scale_y = 40, 60
+    
+    def __init__(self):
+        self.asset = SPACESHIP #call a asset location
+        self.asset = pygame.transform.scale(self.asset, (self.scale_x, self.scale_y)) #scale the asset
+        self.asset_rect = self.asset.get_rect() #take the rectangle of the asset
+        self.asset_rect.x, self.asset_rect.y = SCREEN_WIDTH // 2, SCREEN_HEIGHT - 80 #create a tuple so that the ship is printed in the bottom half of the screen
+        
+    def move_left(self):
+        if self.asset_rect.left > 0: #determine the limit of the screen
+            self.asset_rect.left -= SPACESHIP_VELOCITY #subtract from the x axis
+            
+    def move_right(self):
+        if self.asset_rect.right < SCREEN_WIDTH: #determine the limit of the screen
+            self.asset_rect.left += SPACESHIP_VELOCITY  #add from the x axis
+
+            
+    def move_up(self):
+        if self.asset_rect.top > 0: #determine the limit of the screen
+            self.asset_rect.top -= SPACESHIP_VELOCITY #subtract from the y axis
+
+            
+    def move_down(self):
+        if self.asset_rect.bottom < SCREEN_HEIGHT: #determine the limit of the screen
+            self.asset_rect.bottom += SPACESHIP_VELOCITY #add from the y axis
+
+    
+    def update(self, user_input): #determinate a key event, to call the respective method
+        if user_input[pygame.K_LEFT]:
+            self.move_left()
+        if user_input[pygame.K_RIGHT]:
+            self.move_right()
+        if user_input[pygame.K_UP]:
+            self.move_up()
+        if user_input[pygame.K_DOWN]:
+            self.move_down()
+    
+    def draw(self, screen):
+        screen.blit(self.asset, (self.asset_rect.x, self.asset_rect.y)) #draw the spaceship in the screen
+
+    

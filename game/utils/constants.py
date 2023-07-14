@@ -6,6 +6,7 @@ TITLE = "Spaceships Game"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
+SPACESHIP_VELOCITY = 10
 
 ## IMG_DIR es el camino a encontrar los "archivos" de imagenes
 # sonido, etc
