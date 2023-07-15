@@ -42,6 +42,6 @@ class Conveyor:
             self.spaceship.update(self.keys)
             self.disem = False
         if self.should_draw:
-            self.event_run()           
+            self.move_conveyor()           
             screen.blit(self.image, (self.rect.x, self.rect.y))
             
