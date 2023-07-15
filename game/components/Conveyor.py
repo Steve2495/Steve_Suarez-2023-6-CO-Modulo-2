@@ -1,6 +1,6 @@
 import pygame
 import time
-from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV
+from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS
 from game.components.Spaceship import Spaceship as sp
 
 class Conveyor:
@@ -11,30 +11,37 @@ class Conveyor:
         self.assets.set_clip(pygame.Rect(652, 11, self.con_width, self.conv_height))
         self.image = self.assets.subsurface(self.assets.get_clip())
         self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = ((SCREEN_WIDTH //2) - (self.con_width //2) + 20), SCREEN_HEIGHT
         self.should_draw = True
         self.spaceship = sp()
-        self.disem = True
+        self.disem = False
+        self.time = 0
         
-    def event_run(self):
-        if self.rect.bottom >= 0 - self.conv_height:
-            if self.disem == True:
-                self.rect.bottom -= CONVEYOR_MOV
-            
-        elif self.rect.top == (SCREEN_HEIGHT - 80):
-            self.disem = False
-            
+    def move_conveyor(self):
+        #print(self.rect.y)
+        if self.rect.y >= 0 - self.conv_height:
+            if not self.disem:
+                self.rect.y -= CONVEYOR_MOV 
+                 
+            if self.rect.y == 383:
+                #print('ACTIVE')
+                self.time += 1
+                print(self.time) 
+                self.disem = True
+                
         else:
             self.should_draw = False
             
     def update_player(self, keys):
-        self.spaceship.update(keys)
+        self.keys = keys
+        
     
     def draw(self, screen):
-        if self.should_draw:
-            self.event_run()
-            screen.blit(self.image, ((SCREEN_WIDTH //2) - (self.con_width //2), SCREEN_HEIGHT))
-            
-        if not self.disem:
-            time.sleep(3)
+        if self.time == (FPS * 2):
             self.spaceship.draw(screen)
-            self.disem = True
+            self.spaceship.update(self.keys)
+            self.disem = False
+        if self.should_draw:
+            self.event_run()           
+            screen.blit(self.image, (self.rect.x, self.rect.y))
+            
