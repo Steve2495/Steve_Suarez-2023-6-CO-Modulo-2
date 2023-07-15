@@ -23,17 +23,14 @@ class Spaceship(Sprite):
             self.asset_rect.left += SPACESHIP_MOV  #add from the x axis
         else:
             self.asset_rect.left = 0
-
             
     def move_up(self):
         if self.asset_rect.top > 0: #determine the limit of the screen
             self.asset_rect.top -= SPACESHIP_MOV #subtract from the y axis
-
             
     def move_down(self):
         if self.asset_rect.bottom < SCREEN_HEIGHT: #determine the limit of the screen
             self.asset_rect.bottom += SPACESHIP_MOV #add from the y axis
-
     
     def update(self, user_input): #determinate a key event, to call the respective method
         if user_input[pygame.K_LEFT]:

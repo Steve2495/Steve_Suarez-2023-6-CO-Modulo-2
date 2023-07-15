@@ -32,14 +32,13 @@ class Game:
                 self.playing = False
 
     def update(self):
-        keys = pygame.key.get_pressed() #get the keys pressed
-        self.conveyor.update_player(keys) #call the update method of the spaceship object 
+        self.keys = pygame.key.get_pressed() #get the keys pressed
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
-        self.conveyor.draw(self.screen) # call the draw method of the class to render the spaceship
+        self.conveyor.draw(self.screen, self.keys) # call the draw method of the class to render the spaceship
         #pygame.display.update()  We no used this line, because the line 43 already do that job
         pygame.display.flip()
 

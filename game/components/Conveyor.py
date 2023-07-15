@@ -1,5 +1,4 @@
 import pygame
-import time
 from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS
 from game.components.Spaceship import Spaceship as sp
 
@@ -18,28 +17,22 @@ class Conveyor:
         self.time = 0
         
     def move_conveyor(self):
-        #print(self.rect.y)
         if self.rect.y >= 0 - self.conv_height:
             if not self.disem:
                 self.rect.y -= CONVEYOR_MOV 
                  
             if self.rect.y == 383:
-                #print('ACTIVE')
                 self.time += 1
                 print(self.time) 
                 self.disem = True
                 
         else:
             self.should_draw = False
-            
-    def update_player(self, keys):
-        self.keys = keys
-        
     
-    def draw(self, screen):
+    def draw(self, screen, keys):
         if self.time == (FPS * 2):
             self.spaceship.draw(screen)
-            self.spaceship.update(self.keys)
+            self.spaceship.update(keys)
             self.disem = False
         if self.should_draw:
             self.move_conveyor()           
