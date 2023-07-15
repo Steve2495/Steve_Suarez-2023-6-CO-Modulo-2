@@ -2,11 +2,12 @@ import pygame
 import os
 
 # Global Constants
-TITLE = "Spaceships Game"
+TITLE = "Spaceship Game"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
-SPACESHIP_VELOCITY = 10
+SPACESHIP_MOV = 10
+CONVEYOR_MOV = 7
 
 ## IMG_DIR es el camino a encontrar los "archivos" de imagenes
 # sonido, etc
@@ -30,6 +31,8 @@ SHIELD_TYPE = 'shield'
 SPACESHIP = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
 SPACESHIP_SHIELD = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship_shield.png"))
 BULLET = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_1.png"))
+
+CONVEYOR = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/ships.png"))
 
 BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))

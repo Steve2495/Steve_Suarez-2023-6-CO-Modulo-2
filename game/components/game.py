@@ -1,6 +1,7 @@
 import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from game.components.Spaceship import Spaceship as sp
+from game.components.Conveyor import Conveyor as cn
 
 class Game:
     def __init__(self):
@@ -13,7 +14,7 @@ class Game:
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
-        self.spaceship = sp() #create a spaceship object
+        self.conveyor = cn() #create a conveyor object
 
     def run(self):
         self.playing = True
@@ -31,14 +32,14 @@ class Game:
                 self.playing = False
 
     def update(self):
-        keys = pygame.key.get_pressed()
-        self.spaceship.update(keys)
+        keys = pygame.key.get_pressed() #get the keys pressed
+        self.conveyor.update_player(keys) #call the update method of the spaceship object 
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
-        self.spaceship.draw(self.screen) # call the draw method of the class to render the spaceship
+        self.conveyor.draw(self.screen) # call the draw method of the class to render the spaceship
         #pygame.display.update()  We no used this line, because the line 43 already do that job
         pygame.display.flip()
 
