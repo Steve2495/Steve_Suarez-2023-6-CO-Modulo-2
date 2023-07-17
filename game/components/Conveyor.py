@@ -42,6 +42,6 @@ class Conveyor:
             screen.blit(self.image, (self.rect.x, self.rect.y))
             
         else:
-            self.enemies.draw(screen, keys)
-            self.enemies_1.draw(screen, keys)
+            self.enemies.draw(screen)
+            self.enemies_1.draw(screen)
             
