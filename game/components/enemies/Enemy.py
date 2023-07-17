@@ -20,7 +20,7 @@ class Enemy(Sprite):
         self.label = FONT.render(f'ENEMY: {label}', True, (240, 50, 50))
         self.movement = movement
         self.cont = 0
-        self.movement_x = random.randint(50, 100) #select the 
+        self.movement_x = random.randint(50, 100) #select the movement
         self.rand = secrets.choice([True, False]) #flag to move at the left or right
         
     def movement_enemy(self):
