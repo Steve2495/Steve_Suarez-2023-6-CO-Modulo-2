@@ -25,28 +25,29 @@ class Enemy(Sprite):
         
     def movement_enemy(self):
         self.cont += 1
-        if (self.cont >= self.movement_x and not self.rand) or (self.rect_enemy.x <= 0):
+        if (self.cont >= self.movement_x and self.keys[pygame.K_RIGHT]) or (self.rect_enemy.x <= 0):
             self.rand = True
             
-        elif (self.cont >= self.movement_x and self.rand) or (self.rect_enemy.x >= SCREEN_WIDTH - scales_enemies[self.enemy][1]):
+        elif (self.cont >= self.movement_x and self.keys[pygame.K_LEFT]) or (self.rect_enemy.x >= SCREEN_WIDTH - scales_enemies[self.enemy][1]):
             self.rand = False
             
         if self.cont >= self.movement_x:
             self.cont = 0
         
-    def update(self):
+    def update(self, keys):
+        self.keys = keys
         self.rect_enemy.y += self.movement - 2
         
-        if self.rand:
+        if self.keys[pygame.K_LEFT] and (self.rect_enemy.x >= 0):
             self.rect_enemy.x += self.movement 
             self.movement_enemy()
             
-        else:
+        elif self.keys[pygame.K_RIGHT] and (self.rect_enemy.x <= SCREEN_WIDTH - scales_enemies[self.enemy][1]):
             self.rect_enemy.x -= self.movement
             self.movement_enemy()
 
-    def draw(self, screen):
+    def draw(self, screen, keys):
         if self.rect_enemy.y <= SCREEN_HEIGHT:
             screen.blit(self.enemies, (self.rect_enemy.x, self.rect_enemy.y))
             screen.blit(self.label, (self.rect_enemy.x - (scales_enemies[self.enemy][0] / 3.8), self.rect_enemy.y - (scales_enemies[self.enemy][1] // 6)))
-            self.update()
+            self.update(keys)
