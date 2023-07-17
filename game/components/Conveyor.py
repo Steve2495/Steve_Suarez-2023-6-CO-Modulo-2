@@ -16,7 +16,7 @@ class Conveyor:
         self.spaceship = sp("Steve")
         self.disem = False
         self.time = 0
-        #self.enemies = en("EN1", 4, 0)
+        self.enemies = en("EN1", 4, 0)
         self.enemies_1 = en("EN2", 4, 1)
         
     def move_conveyor(self):
@@ -42,6 +42,6 @@ class Conveyor:
             screen.blit(self.image, (self.rect.x, self.rect.y))
             
         else:
-            #self.enemies.draw(screen)
+            self.enemies.draw(screen)
             self.enemies_1.draw(screen)
             
