@@ -1,6 +1,5 @@
 import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
-from game.components.Spaceship import Spaceship as sp
 from game.components.Conveyor import Conveyor as cn
 
 class Game:

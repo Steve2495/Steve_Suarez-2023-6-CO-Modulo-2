@@ -1,6 +1,9 @@
 import pygame
 import os
 
+pygame.init()
+pygame.font.init()
+
 # Global Constants
 TITLE = "Spaceship Game"
 SCREEN_HEIGHT = 600
@@ -39,3 +42,4 @@ ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
 ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 
 FONT_STYLE = 'freesansbold.ttf'
+FONT = pygame.font.Font(FONT_STYLE, 12)
