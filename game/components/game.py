@@ -1,6 +1,7 @@
 import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from game.components.Conveyor import Conveyor as cn
+from game.components.Bullets_manager import BulletManager
 
 class Game:
     def __init__(self):
@@ -14,6 +15,7 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.conveyor = cn() #create a conveyor object
+        self.bullet_manager = BulletManager()
 
     def run(self):
         self.playing = True
@@ -32,13 +34,15 @@ class Game:
 
     def update(self):
         self.keys = pygame.key.get_pressed() #get the keys pressed
+        self.bullet_manager.update()
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.conveyor.draw(self.screen, self.keys) # call the draw method of the class to render the spaceship
-        #pygame.display.update()  We no used this line, because the line 43 already do that job
+        self.bullet_manager.draw(self.screen)
+        pygame.display.update()  #We no used this line, because the line 43 already do that job
         pygame.display.flip()
 
     def draw_background(self):
