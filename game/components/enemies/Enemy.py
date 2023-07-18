@@ -11,6 +11,7 @@ mov = 15
 class Enemy(Sprite):
     def __init__(self, label, movement, type):
         super(Enemy, self).__init__()
+        self.type = 'enemy'
         x_pos_init = [SCREEN_WIDTH - scales_enemies[type][0]-20, SCREEN_WIDTH / 1.5, SCREEN_WIDTH / 2, SCREEN_WIDTH / 3, SCREEN_WIDTH / 4, SCREEN_WIDTH / 5, SCREEN_WIDTH / 6, SCREEN_WIDTH / 7, 0]
         self.enemy = type
         self.enemies = [ENEMY_1, ENEMY_2]
