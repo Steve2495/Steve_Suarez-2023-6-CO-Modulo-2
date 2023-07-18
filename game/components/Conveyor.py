@@ -1,5 +1,5 @@
 import pygame
-from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS
+from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS, FONT_2, ROUND_1_PATH
 from game.components.Spaceship import Spaceship as sp
 from game.components.enemies.Enemy import Enemy as en
 
@@ -18,6 +18,7 @@ class Conveyor:
         self.time = 0
         self.enemies = en("EN1", 4, 0)
         self.enemies_1 = en("EN2", 4, 1)
+        self.rou = 0
         
     def move_conveyor(self):
         if self.rect.y >= 0 - self.conv_height:
@@ -30,9 +31,14 @@ class Conveyor:
                 
         else:
             self.should_draw = False
+            
+    def counter_round(self):
+        self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
+        self.round_rect = self.round.get_rect()
+        self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
     
     def draw(self, screen, keys):
-        if self.time == (FPS * 2):
+        if self.time >= (FPS * 2):
             self.spaceship.draw(screen)
             self.spaceship.update(keys)
             self.disem = False
@@ -42,6 +48,19 @@ class Conveyor:
             screen.blit(self.image, (self.rect.x, self.rect.y))
             
         else:
-            self.enemies.draw(screen)
-            self.enemies_1.draw(screen)
+            if self.time < (FPS * 5):
+                self.time += 1
+                if self.time == (FPS * 2.5):
+                    print(self.time)
+                    pygame.mixer.music.load(ROUND_1_PATH)
+                    pygame.mixer.music.play(1, 1.3)
+            if self.time >= (FPS * 2.5):
+                self.counter_round()
+                screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
+                if self.time >= (FPS * 3):
+                    self.rou = 1
+                    self.counter_round()
+                    if self.time >= (FPS * 5):
+                        self.enemies.draw(screen)
+                        self.enemies_1.draw(screen)
             

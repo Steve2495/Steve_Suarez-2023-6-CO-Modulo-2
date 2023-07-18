@@ -16,7 +16,7 @@ class Enemy(Sprite):
         self.enemies = [ENEMY_1, ENEMY_2]
         self.enemies = pygame.transform.scale(self.enemies[self.enemy], scales_enemies[self.enemy])
         self.rect_enemy = self.enemies.get_rect()
-        self.rect_enemy.x, self.rect_enemy.y = (x_pos_init[random.randint(0, 8)], 0)
+        self.rect_enemy.x, self.rect_enemy.y = (x_pos_init[random.randint(0, 8)], -scales_enemies[type][1])
         self.label = FONT.render(f'ENEMY: {label}', True, (240, 50, 50))
         self.movement = movement
         self.cont = 0

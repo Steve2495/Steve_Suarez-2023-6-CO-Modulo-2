@@ -43,3 +43,8 @@ ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 
 FONT_STYLE = 'freesansbold.ttf'
 FONT = pygame.font.Font(FONT_STYLE, 12)
+
+FONT_PATH = os.path.join(IMG_DIR, 'Other', 'Pixeltype.ttf')
+FONT_2 = pygame.font.Font(FONT_PATH, 50)
+
+ROUND_1_PATH = os.path.join(IMG_DIR, 'Other', 'round_1.mp3')
