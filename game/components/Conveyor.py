@@ -1,4 +1,5 @@
 import pygame
+import random
 from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS, FONT_2, ROUND_1_PATH
 from game.components.Spaceship import Spaceship as sp
 from game.components.enemies.Enemy import Enemy as en
@@ -16,9 +17,11 @@ class Conveyor:
         self.spaceship = sp("Steve")
         self.disem = False
         self.time = 0
-        self.enemies = en("EN1", 4, 0)
-        self.enemies_1 = en("EN2", 4, 1)
+        self.enemies = []
+        self.enemie_0 = en("EN1", 4, 0)
+        self.enemie_1 = en("EN2", 4, 1)
         self.rou = 0
+        self.num_enemies = 0
         
     def move_conveyor(self):
         if self.rect.y >= 0 - self.conv_height:
@@ -36,7 +39,41 @@ class Conveyor:
         self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
         self.round_rect = self.round.get_rect()
         self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
-    
+        
+    def dispose_enemy(self):
+        if len(self.spaceship.bullets) != 0:
+            for b in self.spaceship.bullets:
+                for e in self.enemies:
+                    if b.rect.colliderect(e):
+                        self.enemies.remove(e)
+
+                
+    def update(self):
+        
+        if len(self.spaceship.bullets) != 0:
+            for b in self.spaceship.bullets:
+                for e in self.enemies:
+                    if b.rect.colliderect(e.rect_enemy):
+                        self.enemies.remove(e)
+                        self.spaceship.buller_counter +=1
+                        self.num_enemies -=1
+
+
+        if self.num_enemies < 3:
+            if random.randint(0, 1) == 1:
+                enemy = en("EN1", 4, 0)
+            else:
+                enemy = en("EN1", 4, 1)
+            enemy.rect_enemy.x = random.randint(20, SCREEN_HEIGHT-20)
+            self.num_enemies += 1
+            self.enemies.append(enemy)
+
+        for e in self.enemies:
+            if e.rect_enemy.y > SCREEN_HEIGHT:
+                self.enemies.remove(e)
+                self.num_enemies -=1
+
+
     def draw(self, screen, keys):
         if self.time >= (FPS * 2):
             self.spaceship.draw(screen)
@@ -51,7 +88,6 @@ class Conveyor:
             if self.time < (FPS * 5):
                 self.time += 1
                 if self.time == (FPS * 2.5):
-                    print(self.time)
                     pygame.mixer.music.load(ROUND_1_PATH)
                     pygame.mixer.music.play(1, 1.3)
             if self.time >= (FPS * 2.5):
@@ -60,7 +96,11 @@ class Conveyor:
                 if self.time >= (FPS * 3):
                     self.rou = 1
                     self.counter_round()
-                    if self.time >= (FPS * 5):
-                        self.enemies.draw(screen)
-                        self.enemies_1.draw(screen)
+                    if self.time >= (FPS * 5) and self.num_enemies <= 3:
+                        self.update()
+
+                        for e in self.enemies:
+                            e.draw(screen)
+                        
+
             

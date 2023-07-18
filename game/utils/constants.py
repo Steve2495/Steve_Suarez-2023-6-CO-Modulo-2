@@ -44,6 +44,7 @@ ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 
 FONT_STYLE = 'freesansbold.ttf'
 FONT = pygame.font.Font(FONT_STYLE, 12)
+COUTER_FONT = pygame.font.Font(FONT_STYLE, 8)
 
 FONT_PATH = os.path.join(IMG_DIR, 'Other', 'Pixeltype.ttf')
 FONT_2 = pygame.font.Font(FONT_PATH, 50)
