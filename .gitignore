@@ -17,3 +17,4 @@ pygame.lnk
 
 # Exclude .venv directories
 .venv/
+venv

@@ -40,9 +40,15 @@ class Spaceship(Sprite):
             self.asset_rect.bottom += SPACESHIP_MOV #add from the y axis
             
     def shoot(self):
-        self.bullet.is_showable = True
-        self.bullet.add_bullet()
-        self.bullet.counter += 1
+        if self.bullet.is_showable == False:
+            # No es necesario llamar a este metodo, cumplirá su funcionalidad cuando se trabaje con muchas balas
+            # self.bullet.add_bullet()
+            self.bullet.is_showable = True
+            self.bullet.counter += 1
+
+            self.bullet.rect.x = self.asset_rect.x + 13
+            self.bullet.rect.y = self.asset_rect.y
+
         #screen.blit(self.bullet, (self.bullet_rect.x, self.bullet_rect.y)) THIS
     
     def update(self, user_input): #determinate a key event, to call the respective method
@@ -56,6 +62,10 @@ class Spaceship(Sprite):
             self.move_down()
         if user_input[pygame.K_SPACE]:
             self.shoot()
+
+        self.bullet.update()
+
+        
     
     def draw(self, screen):
         screen.blit(self.label, (self.asset_rect.x - (self.scale_x //2), self.asset_rect.y - (self.scale_y //5)))

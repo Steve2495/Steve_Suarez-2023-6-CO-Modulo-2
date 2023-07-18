@@ -28,14 +28,16 @@ class Bullet(Sprite):
             self.rect.y += self.bullet_movement
         
     def update(self):
-        pass
-        
+        if self.is_showable:
+            self.rect.y -= self.bullet_movement
+
+        if self.rect.y > SCREEN_HEIGHT or self.rect.y < 0 :
+            self.is_showable = False
+
+
     def draw(self, screen):
-        if self.counter >= 1:
-            if self.rect.y < SCREEN_HEIGHT:
-                screen.blit(self.image, (self.rect.x, self.rect.y))
-            else:
-                self.is_showable = False
+        if self.is_showable:
+            screen.blit(self.image, (self.rect.x, self.rect.y))
             
 
         
