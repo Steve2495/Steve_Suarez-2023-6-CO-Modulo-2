@@ -44,13 +44,12 @@ class Spaceship(Sprite):
             self.asset_rect.bottom += SPACESHIP_MOV
             
     def update_counter_text(self):
-        self.target_count = COUTER_FONT.render(f'BULLETS: {self.buller_counter}', True, (12, 159, 254))
+        self.target_count = COUTER_FONT.render(f'KILLED_ENEMIES: {self.buller_counter}', True, (12, 159, 254))
 
     def shoot(self):
         if not self.bullets or self.asset_rect.y - self.bullets[-1].rect.y > 50:
             bullet = Bullet(self.type, self.asset_rect.x, self.asset_rect.y)
             self.bullets.append(bullet)
-            self.buller_counter += 1
             self.update_counter_text()
     
     def update(self, user_input): #determinate a key event, to call the respective method
