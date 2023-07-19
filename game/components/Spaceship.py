@@ -2,8 +2,6 @@ import pygame
 from pygame.sprite import Sprite
 from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, SPACESHIP_MOV, FONT, COUTER_FONT
 from game.components.bullets import Bullet
-from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, SPACESHIP_MOV, FONT, BULLET
-from game.components.bullet import Bullet
 
 pygame.init()
 pygame.font.init()
@@ -53,10 +51,6 @@ class Spaceship(Sprite):
             bullet = Bullet(self.type, self.asset_rect.x, self.asset_rect.y)
             self.bullets.append(bullet)
             self.update_counter_text()
-
-    def shoot(self, bullet_manager, game):
-        bullet = Bullet(self)
-        bullet_manager.add_bullet(bullet, game)
     
     def update(self, user_input): #determinate a key event, to call the respective method
         if user_input[pygame.K_LEFT]:
@@ -87,7 +81,5 @@ class Spaceship(Sprite):
         screen.blit(self.asset, (self.asset_rect.x, self.asset_rect.y))
         for e in self.bullets:
             e.draw(screen)
-        screen.blit(self.label, (self.asset_rect.x - (self.scale_x //2), self.asset_rect.y - (self.scale_y //5)))
-        screen.blit(self.asset, (self.asset_rect.x, self.asset_rect.y)) #draw the spaceship in the screen
 
     

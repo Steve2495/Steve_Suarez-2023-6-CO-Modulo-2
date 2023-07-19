@@ -24,7 +24,6 @@ class Enemy(Sprite):
         self.cont = 0
         self.movement_x = random.randint(50, 100) #select the movement
         self.rand = secrets.choice([True, False]) #flag to move at the left or right
-        self.bullet = Bullet(self.type, self.rect_enemy.x, self.rect_enemy.y)
         self.enemy_bullets = []
         self.destroy = False
         

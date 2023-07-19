@@ -18,8 +18,6 @@ class Conveyor:
         self.disem = False
         self.time = 0
         self.enemies = []
-        self.enemie_0 = en("EN1", 4, 0)
-        self.enemie_1 = en("EN2", 4, 1)
         self.rou = 0
         self.num_enemies = 0
         
@@ -35,7 +33,7 @@ class Conveyor:
         else:
             self.should_draw = False
             
-    def counter_round(self):
+    def show_counter_round(self):
         self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
         self.round_rect = self.round.get_rect()
         self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
@@ -47,18 +45,7 @@ class Conveyor:
                     if b.rect.colliderect(e):
                         self.enemies.remove(e)
 
-                
-    def update(self):
-        
-        if len(self.spaceship.bullets) != 0:
-            for b in self.spaceship.bullets:
-                for e in self.enemies:
-                    if b.rect.colliderect(e.rect_enemy):
-                        self.enemies.remove(e)
-                        self.spaceship.buller_counter +=1
-                        self.num_enemies -=1
-
-
+    def create_enemies(self):
         if self.num_enemies < 3:
             if random.randint(0, 1) == 1:
                 enemy = en("EN1", 4, 0)
@@ -67,12 +54,26 @@ class Conveyor:
             enemy.rect_enemy.x = random.randint(20, SCREEN_HEIGHT-20)
             self.num_enemies += 1
             self.enemies.append(enemy)
-
+            
+    def manage_bullet_enemy_colision(self):
+        if len(self.spaceship.bullets) != 0:
+            for b in self.spaceship.bullets:
+                for e in self.enemies:
+                    if b.rect.colliderect(e.rect_enemy):
+                        self.spaceship.buller_counter +=1
+                        self.enemies.remove(e)
+                        self.num_enemies -=1
+                
+    def update(self):
+        self.manage_bullet_enemy_colision()     
+        self.create_enemies()
+        self.manage_borders()
+        
+    def manage_borders(self):
         for e in self.enemies:
             if e.rect_enemy.y > SCREEN_HEIGHT:
                 self.enemies.remove(e)
                 self.num_enemies -=1
-
 
     def draw(self, screen, keys):
         if self.time >= (FPS * 2):
@@ -91,16 +92,13 @@ class Conveyor:
                     pygame.mixer.music.load(ROUND_1_PATH)
                     pygame.mixer.music.play(1, 1.3)
             if self.time >= (FPS * 2.5):
-                self.counter_round()
+                self.show_counter_round()
                 screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
                 if self.time >= (FPS * 3):
                     self.rou = 1
-                    self.counter_round()
+                    self.show_counter_round()
                     if self.time >= (FPS * 5) and self.num_enemies <= 3:
                         self.update()
 
                         for e in self.enemies:
                             e.draw(screen)
-                        
-
-            
