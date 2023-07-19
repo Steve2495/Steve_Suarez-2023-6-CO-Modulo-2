@@ -50,9 +50,7 @@ class Conveyor:
             self.num_enemies += 1
             self.enemies.append(enemy)
             
-    def manage_bullet_enemy_colision(self):
-        print('LEN:', len(self.enemies))
-        
+    def manage_bullet_enemy_colision(self):     
         if len(self.spaceship.bullets) != 0:
             for b in self.spaceship.bullets:
                 for e in self.enemies:
@@ -117,11 +115,9 @@ class Conveyor:
                         self.update()
                         for e in self.enemies:
                             e.draw(screen)
-                        print(f'HEARTS: {self.spaceship.hearts}')    
                         if self.spaceship.hearts == 0:
                             self.spaceship.deaths += 1
                             self.update_game_over(screen)
                             for e in self.enemies:
                                 e.update_position()
-                                for b in e.enemy_bullets:
-                                    e.enemy_bullets = []
+                                e.enemy_bullets = []

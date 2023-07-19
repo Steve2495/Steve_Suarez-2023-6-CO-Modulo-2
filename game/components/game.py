@@ -1,5 +1,5 @@
 import pygame
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, BACKGROUND_MUSIC
 from game.components.Conveyor import Conveyor as cn
 
 class Game:
@@ -32,7 +32,6 @@ class Game:
 
     def update(self):
         self.keys = pygame.key.get_pressed() #get the keys pressed
-        print(self.conveyor.spaceship.hearts)
         if self.keys[pygame.K_r] and self.conveyor.spaceship.hearts == 0:
             self.conveyor.spaceship.hearts = 10
         
@@ -43,12 +42,13 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((0, 0, 0)) 
         self.should_draw()
         pygame.display.update()
         pygame.display.flip()
 
     def draw_background(self):
+        """pygame.mixer.music.load(BACKGROUND_MUSIC)
+        pygame.mixer.music.play()"""
         image = pygame.transform.scale(BG, (SCREEN_WIDTH, SCREEN_HEIGHT))
         image_height = image.get_height()
         self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg))
