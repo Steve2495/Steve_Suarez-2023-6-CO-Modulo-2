@@ -3,6 +3,7 @@ import random
 from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS, FONT_2, ROUND_1_PATH
 from game.components.Spaceship import Spaceship as sp
 from game.components.enemies.Enemy import Enemy as en
+from game.components.game_over import Game_over as Go
 
 class Conveyor:
     con_width, conv_height = 230, 266
@@ -20,6 +21,7 @@ class Conveyor:
         self.enemies = []
         self.rou = 0
         self.num_enemies = 0
+        self.should_run = True
         
     def move_conveyor(self):
         if self.rect.y >= 0 - self.conv_height:
@@ -37,13 +39,6 @@ class Conveyor:
         self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
         self.round_rect = self.round.get_rect()
         self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
-        
-    def dispose_enemy(self):
-        if len(self.spaceship.bullets) != 0:
-            for b in self.spaceship.bullets:
-                for e in self.enemies:
-                    if b.rect.colliderect(e):
-                        self.enemies.remove(e)
 
     def create_enemies(self):
         if self.num_enemies < 3:
@@ -56,6 +51,8 @@ class Conveyor:
             self.enemies.append(enemy)
             
     def manage_bullet_enemy_colision(self):
+        print('LEN:', len(self.enemies))
+        
         if len(self.spaceship.bullets) != 0:
             for b in self.spaceship.bullets:
                 for e in self.enemies:
@@ -63,7 +60,21 @@ class Conveyor:
                         self.spaceship.buller_counter +=1
                         self.enemies.remove(e)
                         self.num_enemies -=1
-                
+
+        if len(self.enemies) !=0:
+            for e in self.enemies:
+                if e.rect_enemy.colliderect(self.spaceship.asset_rect):
+                    self.enemies.remove(e)
+                    self.spaceship.buller_counter +=1
+                    self.spaceship.hearts -=1
+                        
+        for e in self.enemies:
+            if len(e.enemy_bullets) != 0:
+                for b in e.enemy_bullets:
+                    if b.rect.colliderect(self.spaceship.asset_rect):
+                        e.enemy_bullets.remove(b)
+                        self.spaceship.hearts -=1
+                                  
     def update(self):
         self.manage_bullet_enemy_colision()     
         self.create_enemies()
@@ -74,9 +85,13 @@ class Conveyor:
             if e.rect_enemy.y > SCREEN_HEIGHT:
                 self.enemies.remove(e)
                 self.num_enemies -=1
+                
+    def update_game_over(self, screen):
+        self.game_over = Go(self.spaceship.label_1, self.spaceship.buller_counter, self.spaceship.deaths)
+        self.game_over.draw(screen)
 
     def draw(self, screen, keys):
-        if self.time >= (FPS * 2):
+        if self.time >= (FPS * 2) and self.spaceship.hearts > 0:
             self.spaceship.draw(screen)
             self.spaceship.update(keys)
             self.disem = False
@@ -97,8 +112,16 @@ class Conveyor:
                 if self.time >= (FPS * 3):
                     self.rou = 1
                     self.show_counter_round()
+                    self.num_enemies = len(self.enemies)
                     if self.time >= (FPS * 5) and self.num_enemies <= 3:
                         self.update()
-
                         for e in self.enemies:
                             e.draw(screen)
+                        print(f'HEARTS: {self.spaceship.hearts}')    
+                        if self.spaceship.hearts == 0:
+                            self.spaceship.deaths += 1
+                            self.update_game_over(screen)
+                            for e in self.enemies:
+                                e.update_position()
+                                for b in e.enemy_bullets:
+                                    e.enemy_bullets = []

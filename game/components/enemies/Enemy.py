@@ -53,6 +53,9 @@ class Enemy(Sprite):
                 e.draw(screen)
             else:
                 self.enemy_bullets.remove(e)
+                
+    def update_position(self):
+        self.rect_enemy.y = -scales_enemies[self.enemy][1]
             
     def shoot(self):
         if not self.enemy_bullets or self.enemy_bullets[-1].rect.y - self.rect_enemy.y > 150:
@@ -67,3 +70,4 @@ class Enemy(Sprite):
             screen.blit(self.label, (rect_x, rect_y))
             self.shoot()
             self.update(screen)
+            

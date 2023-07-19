@@ -11,6 +11,9 @@ class Spaceship(Sprite):
     
     def __init__(self, label):
         super(Spaceship, self).__init__()
+        self.label_1 = label
+        self.hearts = 10
+        self.deaths = 0
         self.type = 'player'
         self.asset = SPACESHIP
         self.asset = pygame.transform.scale(self.asset, (self.scale_x, self.scale_y))
@@ -50,7 +53,6 @@ class Spaceship(Sprite):
         if not self.bullets or self.asset_rect.y - self.bullets[-1].rect.y > 50:
             bullet = Bullet(self.type, self.asset_rect.x, self.asset_rect.y)
             self.bullets.append(bullet)
-            self.update_counter_text()
     
     def update(self, user_input): #determinate a key event, to call the respective method
         if user_input[pygame.K_LEFT]:
@@ -74,8 +76,10 @@ class Spaceship(Sprite):
             if e.rect.y < 0:
              self.bullets.remove(e)
         # self.bullet.update()
+            
 
     def draw(self, screen):
+        self.update_counter_text()
         screen.blit(self.label, (self.asset_rect.x - (self.scale_x // 2), self.asset_rect.y - (self.scale_y // 5)))
         screen.blit(self.target_count, (self.asset_rect.x + self.scale_x, self.asset_rect.y + (self.scale_y // 7)))
         screen.blit(self.asset, (self.asset_rect.x, self.asset_rect.y))

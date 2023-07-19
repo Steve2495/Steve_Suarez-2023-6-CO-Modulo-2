@@ -23,6 +23,7 @@ IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 ICON = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
 
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
+BACKGROUND = pygame.image.load(os.path.join(IMG_DIR, 'Other/background.jpg'))
 
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
@@ -48,5 +49,6 @@ COUTER_FONT = pygame.font.Font(FONT_STYLE, 8)
 
 FONT_PATH = os.path.join(IMG_DIR, 'Other', 'Pixeltype.ttf')
 FONT_2 = pygame.font.Font(FONT_PATH, 50)
+FONT_3 = pygame.font.Font(FONT_PATH, 94)
 
 ROUND_1_PATH = os.path.join(IMG_DIR, 'Other', 'round_1.mp3')
