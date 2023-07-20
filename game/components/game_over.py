@@ -15,7 +15,7 @@ class Game_over:
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
 
-        # Draw the semi-transparent surface over the background image
+        # Draw the gradient surface over the background image
         screen.blit(self.overlay_surface, (0, 0))
 
         # Render and draw the text "GAME OVER"

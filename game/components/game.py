@@ -14,6 +14,7 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.conveyor = cn() #create a conveyor object
+        self.background_sound = pygame.mixer.Sound(BACKGROUND_MUSIC)
 
     def run(self):
         self.playing = True
@@ -42,6 +43,8 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
+        self.background_sound.set_volume(0.3)
+        self.background_sound.play()
         self.should_draw()
         pygame.display.update()
         pygame.display.flip()

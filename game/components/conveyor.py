@@ -1,6 +1,6 @@
 import pygame
 import random
-from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS, FONT_2, ROUND_1_PATH
+from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS, FONT_2, ROUND_1_PATH, BACKGROUND_MUSIC
 from game.components.spaceship import Spaceship as sp
 from game.components.enemies.enemy import Enemy as en
 from game.components.game_over import Game_over as Go
@@ -16,6 +16,7 @@ class Conveyor:
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = ((SCREEN_WIDTH //2) - (self.con_width //2) + 20), SCREEN_HEIGHT
         self.should_draw = True
+        self.power_shield_counter = 0
         self.spaceship = sp("Steve")
         self.disem = False
         self.time = 0
@@ -23,6 +24,9 @@ class Conveyor:
         self.rou = 0
         self.num_enemies = 0
         self.should_run = True
+        self.i = 5
+        self.timer_cloack = 0
+        self.enemies_ouside_counter = 0
         
     def move_conveyor(self):
         if self.rect.y >= 0 - self.conv_height:
@@ -51,7 +55,37 @@ class Conveyor:
             self.num_enemies += 1
             self.enemies.append(enemy)
             
-    def manage_bullet_enemy_colision(self):     
+    def collisions_shield(self):
+        self.i -= 1
+        if self.i == 0:
+            self.power_shield_counter = 0
+            self.i = 5
+                
+    def manage_shield(self):
+        if not self.spaceship.shield:
+            self.spaceship.hearts -=1
+        else:
+            self.collisions_shield()
+        if self.power_shield_counter < 5:
+            self.power_shield_counter = 0
+            
+    def manage_cloack(self):
+        print('LEN:', len(self.spaceship.bullets))
+        #self.enemies_ouside_counter += 1
+        if len(self.spaceship.bullets) == 0 and self.enemies_ouside_counter >= 3:
+            self.spaceship.cloack = True
+    
+    def calculate_timer_cloack(self):
+        if self.spaceship.cloack:
+            if not hasattr(self, 'cloack_timer_started'):
+                self.init_cloack_time = pygame.time.get_ticks()
+                self.cloack_timer_started = True
+            print('TIME: ', self.init_cloack_time)
+            if pygame.time.get_ticks() >= self.init_cloack_time + 5000:
+                self.spaceship.cloack = False
+                self.enemies_ouside_counter = 0
+
+    def manage_bullet_enemy_colision(self):   
         if len(self.spaceship.bullets) != 0:
             for b in self.spaceship.bullets:
                 for e in self.enemies:
@@ -59,20 +93,22 @@ class Conveyor:
                         self.spaceship.buller_counter +=1
                         self.enemies.remove(e)
                         self.num_enemies -=1
+                        if self.power_shield_counter < 5:
+                            self.power_shield_counter += 1                
 
         if len(self.enemies) !=0:
             for e in self.enemies:
                 if e.rect_enemy.colliderect(self.spaceship.asset_rect):
                     self.enemies.remove(e)
                     self.spaceship.buller_counter +=1
-                    self.spaceship.hearts -=1
+                    self.manage_shield()
                         
         for e in self.enemies:
             if len(e.enemy_bullets) != 0:
                 for b in e.enemy_bullets:
                     if b.rect.colliderect(self.spaceship.asset_rect):
                         e.enemy_bullets.remove(b)
-                        self.spaceship.hearts -=1
+                        self.manage_shield()
                                   
     def update(self):
         self.hearts = Hearts(self.spaceship.hearts)
@@ -92,8 +128,8 @@ class Conveyor:
 
     # Update and draw the spaceship
     def update_spaceship(self, screen, keys):
-        self.spaceship.draw(screen)
         self.spaceship.update(keys)
+        self.spaceship.draw(screen, self.power_shield_counter)
 
     # Handle time and load round 1 music
     def handle_time(self):
@@ -127,6 +163,11 @@ class Conveyor:
     def draw_enemies(self, screen):
         for enemy in self.enemies:
             enemy.draw(screen)
+            if enemy.rect_enemy.y == SCREEN_HEIGHT:
+                print('Enemy_counter:',self.enemies_ouside_counter)
+                self.enemies_ouside_counter += 1
+            self.manage_cloack()
+            self.calculate_timer_cloack()
 
     # Reset the enemies positions after the players defeat
     def reset_enemies_position(self):

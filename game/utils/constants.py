@@ -54,4 +54,5 @@ FONT_2 = pygame.font.Font(FONT_PATH, 50)
 FONT_3 = pygame.font.Font(FONT_PATH, 94)
 
 BACKGROUND_MUSIC = os.path.join(IMG_DIR, 'Other', 'background.ogg')
+SHOOT = os.path.join(IMG_DIR, 'Other', 'laser5.ogg')
 ROUND_1_PATH = os.path.join(IMG_DIR, 'Other', 'round_1.mp3')
