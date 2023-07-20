@@ -1,9 +1,10 @@
 import pygame
 import random
 from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR_MOV, FPS, FONT_2, ROUND_1_PATH
-from game.components.Spaceship import Spaceship as sp
-from game.components.enemies.Enemy import Enemy as en
+from game.components.spaceship import Spaceship as sp
+from game.components.enemies.enemy import Enemy as en
 from game.components.game_over import Game_over as Go
+from game.components.hearts import Hearts
 
 class Conveyor:
     con_width, conv_height = 230, 266
@@ -74,6 +75,7 @@ class Conveyor:
                         self.spaceship.hearts -=1
                                   
     def update(self):
+        self.hearts = Hearts(self.spaceship.hearts)
         self.manage_bullet_enemy_colision()     
         self.create_enemies()
         self.manage_borders()
@@ -88,36 +90,69 @@ class Conveyor:
         self.game_over = Go(self.spaceship.label_1, self.spaceship.buller_counter, self.spaceship.deaths)
         self.game_over.draw(screen)
 
+    # Update and draw the spaceship
+    def update_spaceship(self, screen, keys):
+        self.spaceship.draw(screen)
+        self.spaceship.update(keys)
+
+    # Handle time and load round 1 music
+    def handle_time(self):
+        self.time += 1
+        if self.time == FPS * 2.5:
+            pygame.mixer.music.load(ROUND_1_PATH)
+            pygame.mixer.music.play(1, 1.3)
+
+    # Display the round counter
+    def show_round_counter(self, screen):
+        self.show_counter_round()
+        screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
+
+    # Manage the current round and enemies
+    def handle_current_round(self, screen):
+        self.rou = 1
+        self.show_counter_round()
+        self.num_enemies = len(self.enemies)
+
+        if self.time >= FPS * 5 and self.num_enemies <= 3:
+            self.update()
+            self.draw_enemies(screen)
+            if self.spaceship.hearts == 0:
+                self.spaceship.deaths += 1
+                self.update_game_over(screen)
+                self.reset_enemies_position()
+                self.reset_enemy_bullets()
+                self.spaceship.bullets = []
+
+    # Draw the enemies on the screen
+    def draw_enemies(self, screen):
+        for enemy in self.enemies:
+            enemy.draw(screen)
+
+    # Reset the enemies positions after the players defeat
+    def reset_enemies_position(self):
+        for enemy in self.enemies:
+            enemy.update_position()
+
+    # Reset the enemy bullets after the players defeat
+    def reset_enemy_bullets(self):
+        for enemy in self.enemies:
+            enemy.enemy_bullets = []
+
+    # Draw and update the spaceship if it needed
     def draw(self, screen, keys):
-        if self.time >= (FPS * 2) and self.spaceship.hearts > 0:
-            self.spaceship.draw(screen)
-            self.spaceship.update(keys)
+        if self.time >= FPS * 2 and self.spaceship.hearts > 0:
+            self.update_spaceship(screen, keys)
             self.disem = False
-            
+
+        # Draw the conveyor or the image as required
         if self.should_draw:
-            self.move_conveyor()           
+            self.move_conveyor()
             screen.blit(self.image, (self.rect.x, self.rect.y))
-            
         else:
-            if self.time < (FPS * 5):
-                self.time += 1
-                if self.time == (FPS * 2.5):
-                    pygame.mixer.music.load(ROUND_1_PATH)
-                    pygame.mixer.music.play(1, 1.3)
-            if self.time >= (FPS * 2.5):
-                self.show_counter_round()
-                screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
-                if self.time >= (FPS * 3):
-                    self.rou = 1
-                    self.show_counter_round()
-                    self.num_enemies = len(self.enemies)
-                    if self.time >= (FPS * 5) and self.num_enemies <= 3:
-                        self.update()
-                        for e in self.enemies:
-                            e.draw(screen)
-                        if self.spaceship.hearts == 0:
-                            self.spaceship.deaths += 1
-                            self.update_game_over(screen)
-                            for e in self.enemies:
-                                e.update_position()
-                                e.enemy_bullets = []
+            # Manage time and rounds
+            if self.time < FPS * 5:
+                self.handle_time()
+            if self.time >= FPS * 2.5:
+                self.show_round_counter(screen)
+            if self.time >= FPS * 3:
+                self.handle_current_round(screen)

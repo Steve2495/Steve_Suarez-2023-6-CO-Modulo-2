@@ -1,6 +1,6 @@
 import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, BACKGROUND_MUSIC
-from game.components.Conveyor import Conveyor as cn
+from game.components.conveyor import Conveyor as cn
 
 class Game:
     def __init__(self):

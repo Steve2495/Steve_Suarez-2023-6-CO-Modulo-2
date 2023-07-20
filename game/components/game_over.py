@@ -3,8 +3,8 @@ from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, FONT_3, FONT_2, BA
 
 class Game_over:
     def __init__(self, nick, target_count, death_count):
-        self.text = 'GAME OVER\n\nPRESS THE R KEY TO RESTART THE GAME'
-        self.report = f'PLAYER:{nick}\nTARGET COUNT:{target_count}\nDEATH COUNT:{death_count}'
+        self.lines = ['GAME OVER', 'PRESS THE R KEY TO RESTART THE GAME']
+        self.report = [f'PLAYER:{nick}', f'TARGET COUNT:{target_count}', f'DEATH COUNT:{death_count}']
         self.background = pygame.transform.scale(BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
         # Create a gradient
@@ -19,7 +19,7 @@ class Game_over:
         screen.blit(self.overlay_surface, (0, 0))
 
         # Render and draw the text "GAME OVER"
-        game_over_surfaces = self.render_multiline_text(self.text, FONT_3, (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
+        game_over_surfaces = self.render_multiline_text(self.lines, FONT_3, (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
         for surface, rect in game_over_surfaces:
             screen.blit(surface, rect)
 
@@ -28,8 +28,7 @@ class Game_over:
         for surface, rect in report_surfaces:
             screen.blit(surface, rect)
 
-    def render_multiline_text(self, text, font, center_pos):
-        lines = text.split('\n')
+    def render_multiline_text(self, lines, font, center_pos):
         surfaces = [font.render(line, False, (255, 255, 255)) for line in lines]
         total_height = sum(surface.get_height() for surface in surfaces)
         y_offset = center_pos[1] - total_height // 2
