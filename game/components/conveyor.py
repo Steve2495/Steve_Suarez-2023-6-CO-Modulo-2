@@ -21,12 +21,13 @@ class Conveyor:
         self.disem = False
         self.time = 0
         self.enemies = []
-        self.rou = 0
         self.num_enemies = 0
         self.should_run = True
         self.i = 5
         self.timer_cloack = 0
         self.enemies_ouside_counter = 0
+        self.rou = 1
+        self.current_round = self.rou * 5
         
     def move_conveyor(self):
         if self.rect.y >= 0 - self.conv_height:
@@ -41,9 +42,18 @@ class Conveyor:
             self.should_draw = False
             
     def show_counter_round(self):
-        self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
-        self.round_rect = self.round.get_rect()
-        self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
+
+        if self.spaceship.buller_counter >= self.current_round:
+            print("ESTOY SUMANDO DE UNA MANERA SENSUAL")
+            self.rou += 1
+            self.current_round += self.rou * 3
+            self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
+            self.round_rect = self.round.get_rect()
+            self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
+        else: 
+            self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
+            self.round_rect = self.round.get_rect()
+            self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
 
     def create_enemies(self):
         if self.num_enemies < 3:
@@ -142,20 +152,21 @@ class Conveyor:
         screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
 
     def update_current_rount(self):
-        if self.spaceship.buller_counter > self.current_round:
+        print("PASE POR ACA")
+        if self.spaceship.buller_counter >= self.current_round:
+            print("")
             self.rou += 1
-            self.current_round += self.rou *5
+            self.current_round = self.rou * 3
+            self.show_counter_round()
+
 
     # Manage the current round and enemies
     def handle_current_round(self, screen):
-        self.rou = 0
-        self.rou += 1
-        self.current_round = self.rou * 6
-        if self.spaceship.buller_counter > self.current_round:
-            self.rou += 1
-            self.current_round += 5
-        self.show_counter_round()
+        
+       
+        
         self.num_enemies = len(self.enemies)
+        print('NUM ENEMIES:', self.num_enemies)
         if self.time >= FPS * 5 and self.num_enemies < self.current_round:
             self.update()
             self.draw_enemies(screen)
@@ -203,4 +214,3 @@ class Conveyor:
                 self.show_round_counter(screen)
             if self.time >= FPS * 3:
                 self.handle_current_round(screen)
-                self.update_current_rount()
