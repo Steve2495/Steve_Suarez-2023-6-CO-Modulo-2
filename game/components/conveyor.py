@@ -44,7 +44,6 @@ class Conveyor:
     def show_counter_round(self):
 
         if self.spaceship.buller_counter >= self.current_round:
-            print("ESTOY SUMANDO DE UNA MANERA SENSUAL")
             self.rou += 1
             self.current_round += self.rou * 3
             self.round = FONT_2.render(f'ROUND: {self.rou}', False, (255, 255, 255))
@@ -56,7 +55,7 @@ class Conveyor:
             self.round_rect.x, self.round_rect.y = SCREEN_WIDTH - 170, 20
 
     def create_enemies(self):
-        if self.num_enemies < 3:
+        if self.num_enemies < 5:
             if random.randint(0, 1) == 1:
                 enemy = en("EN1", 4, 0)
             else:
@@ -81,7 +80,7 @@ class Conveyor:
             
     def manage_cloack(self):
         #self.enemies_ouside_counter += 1
-        if len(self.spaceship.bullets) == 0 and self.enemies_ouside_counter >= 3:
+        if len(self.spaceship.bullets) == 0 and self.enemies_ouside_counter >= 5:
             self.spaceship.cloack = True
     
     def calculate_timer_cloack(self):
@@ -151,23 +150,11 @@ class Conveyor:
         self.show_counter_round()
         screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
 
-    def update_current_rount(self):
-        print("PASE POR ACA")
-        if self.spaceship.buller_counter >= self.current_round:
-            print("")
-            self.rou += 1
-            self.current_round = self.rou * 3
-            self.show_counter_round()
-
-
     # Manage the current round and enemies
     def handle_current_round(self, screen):
-        
-       
-        
         self.num_enemies = len(self.enemies)
         print('NUM ENEMIES:', self.num_enemies)
-        if self.time >= FPS * 5 and self.num_enemies < self.current_round:
+        if self.time >= FPS * 5 and self.num_enemies < 6:
             self.update()
             self.draw_enemies(screen)
             if self.spaceship.hearts == 0:
