@@ -70,7 +70,6 @@ class Conveyor:
             self.power_shield_counter = 0
             
     def manage_cloack(self):
-        print('LEN:', len(self.spaceship.bullets))
         #self.enemies_ouside_counter += 1
         if len(self.spaceship.bullets) == 0 and self.enemies_ouside_counter >= 3:
             self.spaceship.cloack = True
@@ -80,7 +79,6 @@ class Conveyor:
             if not hasattr(self, 'cloack_timer_started'):
                 self.init_cloack_time = pygame.time.get_ticks()
                 self.cloack_timer_started = True
-            print('TIME: ', self.init_cloack_time)
             if pygame.time.get_ticks() >= self.init_cloack_time + 5000:
                 self.spaceship.cloack = False
                 self.enemies_ouside_counter = 0
@@ -143,13 +141,22 @@ class Conveyor:
         self.show_counter_round()
         screen.blit(self.round, (self.round_rect.x, self.round_rect.y))
 
+    def update_current_rount(self):
+        if self.spaceship.buller_counter > self.current_round:
+            self.rou += 1
+            self.current_round += self.rou *5
+
     # Manage the current round and enemies
     def handle_current_round(self, screen):
-        self.rou = 1
+        self.rou = 0
+        self.rou += 1
+        self.current_round = self.rou * 6
+        if self.spaceship.buller_counter > self.current_round:
+            self.rou += 1
+            self.current_round += 5
         self.show_counter_round()
         self.num_enemies = len(self.enemies)
-
-        if self.time >= FPS * 5 and self.num_enemies <= 3:
+        if self.time >= FPS * 5 and self.num_enemies < self.current_round:
             self.update()
             self.draw_enemies(screen)
             if self.spaceship.hearts == 0:
@@ -164,7 +171,6 @@ class Conveyor:
         for enemy in self.enemies:
             enemy.draw(screen)
             if enemy.rect_enemy.y == SCREEN_HEIGHT:
-                print('Enemy_counter:',self.enemies_ouside_counter)
                 self.enemies_ouside_counter += 1
             self.manage_cloack()
             self.calculate_timer_cloack()
@@ -197,3 +203,4 @@ class Conveyor:
                 self.show_round_counter(screen)
             if self.time >= FPS * 3:
                 self.handle_current_round(screen)
+                self.update_current_rount()

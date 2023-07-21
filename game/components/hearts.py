@@ -19,12 +19,11 @@ class Hearts:
         screen.blit(heart, (heart_rect.x - heart_width, heart_rect.y))
         
     def update(self):
-        print(self.hearts_counter)
         if self.hearts_counter < self.max_hearts:
             self.hearts_counter += 2
             self.hearts_list.append(2)
         else:
-            while self.hearts_counter % 2 == 1 and self.hearts_counter < self.max_hearts:
+            if self.hearts_counter % 2 == 1 and self.hearts_counter < self.max_hearts:
                 self.hearts_counter += 1
                 self.hearts_list.append(1)
             else:

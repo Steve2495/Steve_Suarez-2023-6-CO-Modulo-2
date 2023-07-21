@@ -43,7 +43,7 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.background_sound.set_volume(0.3)
+        self.background_sound.set_volume(0.1)
         self.background_sound.play()
         self.should_draw()
         pygame.display.update()
