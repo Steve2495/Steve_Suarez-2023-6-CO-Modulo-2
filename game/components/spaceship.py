@@ -2,6 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, SPACESHIP_MOV, FONT, COUTER_FONT, SPACESHIP_SHIELD, SHOOT
 from game.components.bullets import Bullet
+from game.components.Healt_bar import Healt_Bar as Hb
 
 pygame.init()
 pygame.font.init()
@@ -127,10 +128,15 @@ class Spaceship(Sprite):
             (self.target_powers, (self.asset_rect.x + self.scale_x, self.asset_rect.y + desplazamiento_y + 10)),
             (self.target_power_1, (self.asset_rect.x + self.scale_x + self.desplaze_x, self.asset_rect.y + desplazamiento_y + 20)),
             (self.target_power_2, (self.asset_rect.x + self.scale_x + self.desplaze_x, self.asset_rect.y + desplazamiento_y + 30))]
+        
+    def draw_healt_bar(self, screen):
+        self.Healt_bar = Hb(self.hearts)
+        self.Healt_bar.draw(screen)
 
     def draw(self, screen, counter):
         self.update_counter_text()
         self.draw_components()
+        self.draw_healt_bar(screen)
         self.tricks(screen)
         for element, position in self.elements_to_draw:
             screen.blit(element, position)

@@ -40,6 +40,7 @@ ENEMY_BULLET = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 CONVEYOR = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/ships.png"))
 
 HEARTS = pygame.image.load(os.path.join(IMG_DIR, 'Other', "hearts.png"))
+HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other', "heart.png"))
 
 BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))

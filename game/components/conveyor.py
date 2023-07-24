@@ -4,7 +4,6 @@ from game.utils.constants import CONVEYOR, SCREEN_WIDTH, SCREEN_HEIGHT, CONVEYOR
 from game.components.spaceship import Spaceship as sp
 from game.components.enemies.enemy import Enemy as en
 from game.components.game_over import Game_over as Go
-from game.components.hearts import Hearts
 
 class Conveyor:
     con_width, conv_height = 230, 266
@@ -98,6 +97,7 @@ class Conveyor:
                 for e in self.enemies:
                     if b.rect.colliderect(e.rect_enemy):
                         self.spaceship.buller_counter +=1
+                        self.spaceship.bullets.remove(b)
                         self.enemies.remove(e)
                         self.num_enemies -=1
                         if self.power_shield_counter < 5:
@@ -118,7 +118,6 @@ class Conveyor:
                         self.manage_shield()
                                   
     def update(self):
-        self.hearts = Hearts(self.spaceship.hearts)
         self.manage_bullet_enemy_colision()     
         self.create_enemies()
         self.manage_borders()
@@ -153,7 +152,6 @@ class Conveyor:
     # Manage the current round and enemies
     def handle_current_round(self, screen):
         self.num_enemies = len(self.enemies)
-        print('NUM ENEMIES:', self.num_enemies)
         if self.time >= FPS * 5 and self.num_enemies < 6:
             self.update()
             self.draw_enemies(screen)
