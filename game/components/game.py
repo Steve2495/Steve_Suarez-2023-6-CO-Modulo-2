@@ -1,5 +1,5 @@
 import pygame
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, BACKGROUND_MUSIC
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, BACKGROUND_MUSIC
 from game.components.conveyor import Conveyor as cn
 
 class Game:
